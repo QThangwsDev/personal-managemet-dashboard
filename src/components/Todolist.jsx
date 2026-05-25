@@ -28,8 +28,43 @@ const TodoList = ()=> {
         fetchTask();
     },[]);
 
+    const handleUpdate = () =>
+    {
+        if (!textinput.trim()) {
+            return;
+        }
 
+        const updatetask = [...tasks]
+        const nextId = tasks.length>0 ? Math.max(...tasks.map(t => t.id)) +1 : 1;
+        if(selectindex === null){
+            const newtask = {
+                id: nextId,
+                text: textinput,
+                isCompleted: false,
+            }
+            updatetask.push(newtask);
+        } else {
+            updatetask[selectindex] = {
+                ...updatetask[selectindex],
+                text: textinput,
+            };
     
+        }
+
+        setTask(updatetask);
+        setTextinput('');
+        setSelectindex(null);
+    };
+
+
+
+    const hanldeDelete = () => {
+        const Deletetask = tasks.filter((_,index) => index !== selectindex);
+        setTask(Deletetask);
+        setSelectindex(null);
+        setTextinput('');
+    }
+
 
   
 
@@ -68,7 +103,16 @@ const TodoList = ()=> {
                     <h2>Danh sach viec lam</h2>
                     <ul className="flex w-fulls flex-col justify-start items-start space-y-2">
                         {tasks.map((item,index) => (
-                            <li className={`w-full bg-gray-500 p-3 rounded-xl flex-1 ${item.isCompleted ? `line-through text-gray-100 opacity-75`:''}`} key={item.id}>{index + 1}. {item.text.length >25 ? item.text.substring(0,25)+'...': item.text}</li>
+                            <li className={`w-full bg-gray-500 p-3 rounded-xl flex-1 ${item.isCompleted ? `line-through text-gray-100 opacity-75`:''}`} key={item.id} onClick={() => {
+                                const copyobj = tasks.map( t =>{
+                                    if(t.id === item.id)
+                                    {
+                                        return {...t, isCompleted : !t.isCompleted };
+                                    }
+                                    return t ;
+                                });
+                                setTask(copyobj);
+                            }}>{index + 1}. {item.text.length >25 ? item.text.substring(0,25)+'...': item.text}</li>
                         ))}
                     </ul>
                 </div>
@@ -97,19 +141,20 @@ const TodoList = ()=> {
                                 }}>
                                 <option value=''>Chọn để chỉnh sửa or xóa</option>    
                             {tasks.map((item,index) => (
-                                <option className='text-white' value={index} key={item.id}>{item.text}</option>
+                                <option className={`${!item.isCompleted ?'text-white ':`cursor-not-allowed opacity-80 text-slate-300 line-through`}`} value={index} key={item.id}>{item.text}</option>
                             ))}
                         </select>
                     </div>
 
 
                     <div className='w-full flex flex-col space-y-1'>
-                        <label className='text-sm font-medium text-gray-300'>Nội dung công việc:</label>
+                        <label htmlFor="todo-input" className='text-sm font-medium text-gray-300'>Nội dung công việc:</label>
                         <input 
+                            id="todo-input"
                             className='w-full bg-gray-600 border border-gray-500 rounded p-2 text-base outline-none font-normal' 
                             type="text" 
                             name="textinput"  
-                            placeholder={selectindex !== null ? 'Nhập nội dung thay đổi...' : 'Nhập công việc mới vào...'} 
+                            placeholder={selectindex === null ? 'Nhập công việc mới vào...' : 'Nhập nội dung thay đổi...'} 
                             value={textinput}
                             onChange={(e) => setTextinput(e.target.value)}
                         />
@@ -117,9 +162,9 @@ const TodoList = ()=> {
                     
 
 
-                    <div className='flex justify-evenly'>
-                        <button className='bg-green-700 rounded-lg px-3'>Update/Add</button>
-                        <button className='bg-red-700 rounded-lg px-3'>Delete</button>
+                    <div className='flex justify-evenly my-2'>
+                        <button className='bg-green-700 rounded-lg px-3' onClick={handleUpdate}>{selectindex !== null ?"Update":"Add"}</button>
+                        <button className={`bg-red-700 rounded-lg px-3 ${selectindex === null ?`opacity-50 cursor-not-allowed`:''}`} onClick={hanldeDelete} disabled={selectindex === null}>Delete</button>
                     </div>
                 </div>
 
