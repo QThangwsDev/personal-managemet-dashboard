@@ -9,7 +9,7 @@ const TodoList = ()=> {
     const [textinput, setTextinput] = useState('');
     const [isLoading ,setLoading] = useState(true)
     const [selectindex, setSelectindex] = useState(null);
-    const [error, setError] = useState(null);
+   
 
     const taskcomp = tasks.filter(item => item.isCompleted).length;
     const process = tasks.length > 0 ? Math.round((taskcomp/tasks.length) * 100 ) : 0 ;
@@ -18,9 +18,11 @@ const TodoList = ()=> {
         const fetchTask = async () => {
             try {
                 const data = await todoAPI.getAll();
+                
                 setTask(data);
-            } catch (err) {
-                setError("Loi tai du lieu")
+            } catch (error) {
+                console.error(error);
+                alert('Loi tai du leeu');
             } finally {
                 setLoading(false);
             }
@@ -65,12 +67,22 @@ const TodoList = ()=> {
         setTextinput('');
     }
 
+    const toggleTask = (id) => {
+        const copyobj = tasks.map(t => {
+            if (t.id === id) {
+                return { ...t, isCompleted: !t.isCompleted };
+            }
+            return t;
+        });
+        setTask(copyobj);
+    }
+
 
   
 
     return (
         <div className='w-full flex justify-center items-center '>
-            <div className="max-w-[500px] min-h-[400px] bg-gray-700 opacity-90 rounded-tl-lg rounded-tr-lg p-5 text-xl space-y-3 font-bold text-white">
+            <div className="max-w-125 max-h-250 bg-gray-700 opacity-90 rounded-tl-lg rounded-tr-lg p-5 text-xl space-y-3 font-bold text-white">
                 {/*title*/}
                 <div className='flex space-x-3'>
                     <div className='w-15 h-15 rounded-2xl  bg-blue-400'/>
@@ -83,17 +95,17 @@ const TodoList = ()=> {
                 {/* total task*/}
                 <div className=' flex justify-around space-x-3'>
                     {/* item stat */}
-                    <div className='w-[100px] h-[100px] bg-slate-800 rounded-2xl flex flex-col justify-center items-center'>
+                    <div className='w-25 h-25 bg-slate-800 rounded-2xl flex flex-col justify-center items-center'>
                         <p className='text-blue-400'>{tasks.length}</p>
                         <p>Total</p>
                     </div>
 
-                    <div className='w-[100px] h-[100px] bg-slate-800 rounded-2xl flex flex-col justify-center items-center'>
+                    <div className='w-25 h-25 bg-slate-800 rounded-2xl flex flex-col justify-center items-center'>
                         <p className='text-green-400'>{taskcomp}</p>
                         <p>Done</p>
                     </div>
 
-                    <div className='w-[100px] h-[100px] bg-slate-800 rounded-2xl flex flex-col justify-center items-center'>
+                    <div className='w-25 h-25 bg-slate-800 rounded-2xl flex flex-col justify-center items-center'>
                         <p className='text-blue-400'>{process}%</p>
                         <p>Process</p>
                     </div>
@@ -101,19 +113,37 @@ const TodoList = ()=> {
                 {/*List*/}
                 <div className='flex flex-col'>
                     <h2>Danh sach viec lam</h2>
-                    <ul className="flex w-fulls flex-col justify-start items-start space-y-2">
-                        {tasks.map((item,index) => (
-                            <li className={`w-full bg-gray-500 p-3 rounded-xl flex-1 ${item.isCompleted ? `line-through text-gray-100 opacity-75`:''}`} key={item.id} onClick={() => {
-                                const copyobj = tasks.map( t =>{
-                                    if(t.id === item.id)
-                                    {
-                                        return {...t, isCompleted : !t.isCompleted };
-                                    }
-                                    return t ;
-                                });
-                                setTask(copyobj);
-                            }}>{index + 1}. {item.text.length >25 ? item.text.substring(0,25)+'...': item.text}</li>
-                        ))}
+                    <ul className="flex w-full flex-col justify-start items-start space-y-2">
+                        {isLoading ? (
+                            /* --- TRẠNG THÁI ĐANG TẢI: Hiển thị 3 hàng Skeleton giả lập --- */
+                            <>
+                                <li className="w-full bg-gray-600/50 p-3 rounded-xl h-[52px] animate-pulse" />
+                                <li className="w-full bg-gray-600/50 p-3 rounded-xl h-[52px] animate-pulse" />
+                                <li className="w-full bg-gray-600/50 p-3 rounded-xl h-[52px] animate-pulse" />
+                            </>
+                        ) : (
+                            /* --- TRẠNG THÁI ĐÃ TẢI XONG: Hiển thị danh sách thực tế --- */
+                            tasks.map((item, index) => (
+                                <li 
+                                    className={`w-full bg-gray-500 p-3 rounded-xl flex-1 cursor-pointer transition-all ${
+                                        item.isCompleted ? 'line-through text-gray-100 opacity-75' : ''
+                                    } focus:outline-none focus:ring-2 focus:ring-blue-300`} 
+                                    key={item.id}
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-pressed={item.isCompleted}
+                                    onClick={() => toggleTask(item.id)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            toggleTask(item.id);
+                                        }
+                                    }}
+                                >
+                                    {index + 1}. {item.text.length > 25 ? item.text.substring(0, 25) + '...' : item.text}
+                                </li>
+                            ))
+                        )}
                     </ul>
                 </div>
 
