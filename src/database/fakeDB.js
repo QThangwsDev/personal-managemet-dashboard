@@ -2,10 +2,11 @@
 
 
 let todoStorage = [
-  { id: 1, text: "Học Front-End nâng cao với React Vite", isCompleted: false },
-  { id: 2, text: "Cấu hình thành công Tailwind v4 và Ant Design", isCompleted: true },
-  { id: 3, text: "Đẩy toàn bộ source code dự án lên GitHub", isCompleted: true },
-  { id: 4, text: "Hoc Back-end di nhat la java ay", isCompleted: false },
+  { id: 1, text: "Học Front-End nâng cao với React Vite", isCompleted: false , category: 'work' },
+  { id: 2, text: "Cấu hình thành công Tailwind v4 và Ant Design", isCompleted: true,  category: 'work'},
+  { id: 3, text: "Đẩy toàn bộ source code dự án lên GitHub", isCompleted: true, category: 'personal'},
+  { id: 4, text: "Hoc Back-end di nhat la java ay", isCompleted: false , category: 'personal' },
+  { id: 5, text: "Tap code tay di", isCompleted: true,  category: 'work'},
 ];
 
 // Hàm tiện ích tạo độ trễ mạng ngẫu nhiên từ 300ms - 800ms cho giống API thật
