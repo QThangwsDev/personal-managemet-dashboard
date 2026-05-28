@@ -82,7 +82,7 @@ function Overview() {
             <div className='w-full h-[100px] flex justify-around items-center text-2xl font-bold text-white m-5'>
                 <div className='w-50 h-25 rounded-2xl  bg-slate-400 flex flex-col p-2'>
                     <h2>TOTAL TASK</h2>
-                    <span>{total}</span>
+                    <span >{total}</span>
                 </div>
 
                 <div className='w-50 h-25 rounded-2xl  bg-slate-400 flex flex-col p-2'>
