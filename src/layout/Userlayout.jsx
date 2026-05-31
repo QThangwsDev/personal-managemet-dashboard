@@ -1,11 +1,13 @@
 import Overview from "../components/overview";
 import { useState } from "react";
+import Logo from "../components/Logo";
+import Avartar from "../components/Avartar";
 
 function Userlayout() {
     const [collapse, setCollapse] = useState(true);
 
     const handletoggle = (e) => {
-        e.stopPropagation(); // Chặn sủi bọt để không kích hoạt click của main
+        e.stopPropagation();
         setCollapse(!collapse);
     }
 
@@ -17,13 +19,16 @@ function Userlayout() {
 
 
   return (
-    <div className='w-full h-full bg-amber-900 text-white flex overflow-hidden'>
+    <div className='w-full h-full bg-orange-900 text-white flex overflow-hidden'>
         <aside className={`${collapse? 'w-80' : 'w-20'} h-full bg-[#40240E] transition-all duration-200 ease-in-out relative overflow-hidden`}>
             {/* logo va ten app */}
-            <div className='w-full h-[100px] flex justify-center items-center text-2xl font-bold text-white border-b-1 border-gray-500'>
-                <h1 className='text-3xl font-bold text-center py-5'>Logo</h1>  
+            <div className='w-full h-20 flex justify-center items-center text-2xl font-bold text-white border-b-1 border-gray-500'>
+                <Logo/> 
             </div>
-            <div className='w-full h-[100px] flex justify-center items-center text-2xl font-bold border-b-1 border-gray-500'>Information User</div>
+            <div className='w-full h-[100px] flex justify-center items-center text-2xl font-bold border-b-1 border-gray-500'>
+                <Avartar
+                    isOpen={collapse}/>
+            </div>
             
             <button className='p-2 bg-amber-300 rounded-2xl absolute bottom-0' 
                     onClick={handletoggle}>dong</button>
