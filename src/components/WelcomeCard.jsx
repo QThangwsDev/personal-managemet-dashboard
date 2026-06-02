@@ -1,10 +1,10 @@
 
 
 
-const WelcomeCard = () => {
+const WelcomeCard = ({percent}) => {
 
     return (
-        <div className="w-full max-w-md h-50 bg-linear-to-bl flex flex-col from-[#6B5F5C] via-[#44312D] via-[#71534c] to-[#4d443f] rounded-2xl flex ">
+        <div className="w-full  h-50 bg-linear-to-bl flex flex-col from-[#6B5F5C] via-[#44312D] via-[#71534c] to-[#4d443f] rounded-2xl  ">
             {/* Loi chao va Avartar nguoi dung */}
             <div className="w-full flex justify-between px-3 py-5 space-x-10">
                 {/* Thong tin ngay thang va loi chao */}
@@ -31,7 +31,7 @@ const WelcomeCard = () => {
             <div className="mx-4">
                 <p className='text-sm text-[#c2a6a0]'>Today's progress</p>
                 {/* thanh tieng trinh */}
-                <svg className='w-full max-w-md'>
+                <svg className='w-full '>
                     <rect 
                         x="0" 
                         y="0" 
@@ -44,7 +44,7 @@ const WelcomeCard = () => {
                         <rect 
                         x="0" 
                         y="0" 
-                        width='65%' 
+                        width={`${percent}%`} 
                         height="12" 
                         rx="6" 
                         className="fill-[#a75e4d] transition-all duration-500 ease-out"

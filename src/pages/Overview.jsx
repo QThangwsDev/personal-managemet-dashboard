@@ -43,6 +43,7 @@ const Overview= () => {
     // phan tram hoan thanh 
     const percentWork = worktasksleght > 0 ? Math.round((workdone/worktasksleght) *100) : 0;
     const percentPersonal = personaltasksleght > 0 ? Math.round(personaldone/personaltasksleght * 100) : 0 ;
+    const percentDone = completed >0 ? Math.round((completed/total) *100 ) :0;
     
     
     
@@ -79,52 +80,38 @@ const Overview= () => {
 
 
     return (
-        <div className='w-full flex flex-col justify-center text-2xl  font-bold text-white'>
+        <div className='w-full flex flex-col justify-center text-2xl  font-bold text-white mb-28'>
             {/* thong tin task */}
 
             {/* Layout tren mobile */}
-            <div className='w-full max-w-md  mx-auto my-6 flex flex-col items-center  justify-center md:hidden'>
-                <WelcomeCard />
-            
-            </div>
+            <div className='w-full max-w-md  mx-auto my-6 flex flex-col items-center  justify-center space-y-3 md:hidden'>
+                <WelcomeCard
+                    percent={percentDone} />
+                {/* cac thong tin lien quan */}
+                <div className=' w-full grid grid-cols-2 gap-3 '>
+                    <div className='h-25 flex-1 rounded-2xl  bg-slate-400 flex flex-col p-2'>
+                        <h2>TOTAL TASK</h2>
+                        <span >{total}</span>
+                    </div>
 
+                    <div className='h-25 rounded-2xl  bg-slate-400 flex flex-col p-2'>
+                        <h2>COMPELETED</h2>
+                        <span>{completed}</span>
+                    </div>
 
+                    <div className='h-25 rounded-2xl  bg-slate-400 flex flex-col p-2 '>
+                        <h2>REMAINING</h2>
+                        <span>{remain}</span>
+                    </div>
 
-
-
-
-
-
-
-
-
-
-            {/* Layout tren desktop */}
-            <div className='hidden md:flex w-full h-full flex-col p-5'>
-                <div className='w-full h-[100px] flex justify-around items-center text-2xl font-bold text-white m-5'>
-                <div className='w-50 h-25 rounded-2xl  bg-slate-400 flex flex-col p-2'>
-                    <h2>TOTAL TASK</h2>
-                    <span >{total}</span>
+                    <div className=' h-25 rounded-2xl  bg-slate-400 flex flex-col p-2'>
+                        <h2>OVERROLL</h2>
+                        <span>{overoll}%</span>
+                    </div>
                 </div>
-
-                <div className='w-50 h-25 rounded-2xl  bg-slate-400 flex flex-col p-2'>
-                    <h2>COMPELETED</h2>
-                    <span>{completed}</span>
-                </div>
-
-                <div className='w-50 h-25 rounded-2xl  bg-slate-400 flex flex-col p-2 '>
-                    <h2>REMAINING</h2>
-                    <span>{remain}</span>
-                </div>
-
-                <div className='w-50 h-25 rounded-2xl  bg-slate-400 flex flex-col p-2'>
-                     <h2>OVERROLL</h2>
-                    <span>{overoll}%</span>
-                </div>
-            </div>
-            {/* phan tram task cong viec va viec ca nhan */}
-            <div className='w-full h-25 flex space-x-5 justify-center'> 
-                <div className="w-80 h-50 bg-slate-600 rounded-2xl flex flex-col p-3 relative">
+                {/* ca bang tieng trinh */}
+                <div className='w-full flex justify-around space-x-3 '>
+                     <div className="w-full h-50 bg-slate-600 rounded-2xl flex flex-col p-3 relative">
                     <span>WORK TASK</span>
                     <svg className="w-fulln transform -rotate-90" viewBox="0 0 200 200">
                         <circle 
@@ -150,9 +137,9 @@ const Overview= () => {
                         />
                     </svg>
                     <span className='mx-auto'>{workdone} of {worktasksleght} done</span>
-                </div>
+                    </div>
 
-                <div className="w-80 h-50 bg-slate-600 rounded-2xl flex flex-col p-3 relative">
+                    <div className="w-full h-50 bg-slate-600 rounded-2xl flex flex-col p-3 relative">
                     <span>PERSONALS TASK</span>
                     <svg className="w-fulln transform -rotate-90" viewBox="0 0 200 200">
                         <circle 
@@ -179,14 +166,107 @@ const Overview= () => {
                     </svg>
                     <span className='mx-auto'>{personaldone} of {personaltasksleght} done</span>
 
+                    </div>
                 </div>
-                <div className="w-80 h-50 bg-slate-600 rounded-2xlflex flex-col p-3 relative"> 
-                    <p>lich tuan suat lam viec tim hieu sau</p>
+            </div>
 
+
+
+
+
+
+
+
+
+
+
+
+            {/* Layout tren desktop */}
+            <div className='hidden md:flex w-full h-full flex-col space-y-4 p-5'>
+                <WelcomeCard
+                    percent={percentDone}/>
+                {/* Cac bang tong so Task */}
+                <div className=' w-full md:grid grid-cols-4 gap-3 '>
+                    <div className='h-25 flex-1 rounded-2xl  bg-slate-400 flex flex-col p-2'>
+                        <h2>TOTAL TASK</h2>
+                        <span >{total}</span>
+                    </div>
+
+                    <div className='h-25 rounded-2xl  bg-slate-400 flex flex-col p-2'>
+                        <h2>COMPELETED</h2>
+                        <span>{completed}</span>
+                    </div>
+
+                    <div className='h-25 rounded-2xl  bg-slate-400 flex flex-col p-2 '>
+                        <h2>REMAINING</h2>
+                        <span>{remain}</span>
+                    </div>
+
+                    <div className=' h-25 rounded-2xl  bg-slate-400 flex flex-col p-2'>
+                        <h2>OVERROLL</h2>
+                        <span>{overoll}%</span>
+                    </div>
+                </div>
+                {/*  Cac vong tien trinh */}
+                <div className='w-full flex justify-around space-x-3 '>
+                     <div className="w-full h-50 bg-slate-600 rounded-2xl flex flex-col p-3 relative">
+                    <span>WORK TASK</span>
+                    <svg className="w-fulln transform -rotate-90" viewBox="0 0 200 200">
+                        <circle 
+                            cx='100' 
+                            cy='100' 
+                            r={radius}
+                            fill='transparent'
+                            className='stroke-white transition-all duration-500 ease-in'
+                            strokeWidth={strokew}
+                            strokeDasharray={circumference}
+                            strokeDashoffset={bgdashoffset}
+                            />
+                        <circle
+                            r={radius}
+                            cx='100'
+                            cy='100'
+                            fill="transparent"
+                            strokeWidth={strokew}
+                            className="stroke-[#5792F6] transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)"
+                            strokeDasharray={circumference}
+                            strokeDashoffset={cir1dashoffset}
+                            strokeLinecap="round"
+                        />
+                    </svg>
+                    <span className='mx-auto'>{workdone} of {worktasksleght} done</span>
+                    </div>
+
+                    <div className="w-full h-50 bg-slate-600 rounded-2xl flex flex-col p-3 relative">
+                    <span>PERSONALS TASK</span>
+                    <svg className="w-fulln transform -rotate-90" viewBox="0 0 200 200">
+                        <circle 
+                            cx='100' 
+                            cy='100' 
+                            r={radius}
+                            fill='transparent'
+                            className='stroke-white transition-all duration-500 ease-in'
+                            strokeWidth={strokew}
+                            strokeDasharray={circumference}
+                            strokeDashoffset={bgdashoffset}
+                            />
+                        <circle
+                            r={radius}
+                            cx='100'
+                            cy='100'
+                            fill="transparent"
+                            strokeWidth={strokew}
+                            className="stroke-[#5792F6] transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)"
+                            strokeDasharray={circumference}
+                            strokeDashoffset={cir2dashoffset}
+                            strokeLinecap="round"
+                        />
+                    </svg>
+                    <span className='mx-auto'>{personaldone} of {personaltasksleght} done</span>
+
+                    </div>
                 </div>
             </div>
-            </div>
-            
         </div>
     )
 }
