@@ -182,3 +182,12 @@
     border-right-color: var(--border);
   }
 }
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none; /* Ẩn cho Chrome, Safari và Opera */
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;  /* Ẩn cho IE và Edge */
+    scrollbar-width: none;  /* Ẩn cho Firefox */
+}

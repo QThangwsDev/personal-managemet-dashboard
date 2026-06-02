@@ -1,7 +1,9 @@
 import { todoAPI } from "../database/fakeDB";
 import { useState,useEffect } from "react";
+import WelcomeCard from "../components/WelcomeCard";
 
-function Overview() {
+
+const Overview= () => {
     const [tasks, setTask] = useState([]);
     const[ bganimate,setBganimate] = useState(0);
     const [cir1,setCir1] = useState(0);
@@ -77,9 +79,29 @@ function Overview() {
 
 
     return (
-        <div className='w-full flex flex-col justify text-2xl  font-bold text-white'>
+        <div className='w-full flex flex-col justify-center text-2xl  font-bold text-white'>
             {/* thong tin task */}
-            <div className='w-full h-[100px] flex justify-around items-center text-2xl font-bold text-white m-5'>
+
+            {/* Layout tren mobile */}
+            <div className='w-full max-w-md  mx-auto my-6 flex flex-col items-center  justify-center md:hidden'>
+                <WelcomeCard />
+            
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            {/* Layout tren desktop */}
+            <div className='hidden md:flex w-full h-full flex-col p-5'>
+                <div className='w-full h-[100px] flex justify-around items-center text-2xl font-bold text-white m-5'>
                 <div className='w-50 h-25 rounded-2xl  bg-slate-400 flex flex-col p-2'>
                     <h2>TOTAL TASK</h2>
                     <span >{total}</span>
@@ -163,6 +185,8 @@ function Overview() {
 
                 </div>
             </div>
+            </div>
+            
         </div>
     )
 }

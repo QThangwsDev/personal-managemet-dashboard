@@ -2,6 +2,7 @@
 
 
 let todoStorage = [
+  
   { id: 1, text: "Học Front-End nâng cao với React Vite", isCompleted: false , category: 'work' },
   { id: 2, text: "Cấu hình thành công Tailwind v4 và Ant Design", isCompleted: true,  category: 'work'},
   { id: 3, text: "Đẩy toàn bộ source code dự án lên GitHub", isCompleted: true, category: 'personal'},
