@@ -3,9 +3,26 @@ import SidebarDesktop from '../components/SidebarDestop';
 import HeaderMobile from '../components/HeaderMobile';
 import { AppstoreOutlined , ScheduleOutlined, DollarOutlined, CheckSquareOutlined, CalendarOutlined} from '@ant-design/icons';
 import Overview from '../pages/Overview';
+import { useState} from 'react';
 
 
 function Userlayout() {
+
+    
+    //tao 1 state de quan ly xem user co cuon xuong khong
+    const [isScroll,setScroll ] = useState(false);
+
+    const handleScroll = (e) =>{
+        const scrollTop = e.currentTarget.scrollTop;
+
+        if(scrollTop >20)
+        {
+            setScroll(true);
+        } else {
+            setScroll(false);
+        }
+    };
+    
     
 
      const navItems = [
@@ -55,13 +72,14 @@ function Userlayout() {
             </div>
 
             {/* SIDEBAR DESKTOP */}
-            <div className='hidden md:flex w-50 h-full bg-gray-800 text-white items-center justify-center'>
+            <div className='hidden md:flex w-50 h-full bg-[#352319] text-white items-center justify-center m-0'>
                <SidebarDesktop navItems={navItems} />
             </div>
      
             {/* MAIN CONTENT (VÙNG NỘI DUNG CHÍNH) */}
             
-            <div className='bg-[#251B19] h-full w-full flex flex-col pt-18 md:pt-0 overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'>
+            <div className='bg-[#251B19] h-full w-full flex flex-col pt-18 md:pt-0 overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'
+                 onScroll={handleScroll}   >
                 {/* Nội dung chính sẽ được hiển thị ở đây */}
                 {/* outlet o day */}
 
@@ -69,8 +87,8 @@ function Userlayout() {
             </div>
 
             {/* HEADER MOBILE */}
-            <div className='w-full h-18 fixed top-0 bg-gray-800 text-white flex items-center justify-center z-40 md:hidden border-b border-gray-700'>
-                <HeaderMobile />
+            <div className={`w-full h-18 fixed top-0 ${isScroll?'bg-[#28201b]':'bg-[#40332a]'}  text-white flex items-center justify-center z-40 md:hidden border-b border-gray-700`}>
+                <HeaderMobile  />
             </div>
 
         </div>

@@ -1,8 +1,8 @@
 
 
-const HeaderMobile = () => {
+const HeaderMobile = ({headerRef}) => {
     return (
-        <div className='w-full h-full flex items-center justify-between px-4'>
+        <div ref={headerRef} className='w-full h-full flex items-center justify-between px-4'>
             {/* Logo hoặc tên ứng dụng */}
             <div className='text-lg font-bold tracking-wide'>Per</div>
 
