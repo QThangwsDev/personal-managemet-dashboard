@@ -191,3 +191,14 @@
     -ms-overflow-style: none;  /* Ẩn cho IE và Edge */
     scrollbar-width: none;  /* Ẩn cho Firefox */
 }
+
+.custom-round-checkbox .ant-checkbox-inner {
+    border-radius: 50% !important; /* Biến vuông thành tròn tuyệt đối */
+    border-color: #4b5563; /* Màu viền xám tối giống thiết kế */
+}
+
+/* Khi được tích chọn, nhuộm màu hồng giống thiết kế */
+.custom-round-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #ec4899 !important; /* Màu hồng accent-pink-500 */
+    border-color: #ec4899 !important;
+}
