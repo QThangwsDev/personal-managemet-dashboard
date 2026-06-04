@@ -2,8 +2,9 @@ import SidebarMoblie from '../components/SidebarMoblie';
 import SidebarDesktop from '../components/SidebarDestop';
 import HeaderMobile from '../components/HeaderMobile';
 import { AppstoreOutlined , ScheduleOutlined, DollarOutlined, CheckSquareOutlined, CalendarOutlined} from '@ant-design/icons';
-import Overview from '../pages/Overview';
+//import Overview from '../pages/Overview';
 import { useState} from 'react';
+import Tasks from '../pages/Tasks'
 
 
 function Userlayout() {
@@ -83,7 +84,8 @@ function Userlayout() {
                 {/* Nội dung chính sẽ được hiển thị ở đây */}
                 {/* outlet o day */}
 
-                <Overview />
+                {/* <Overview /> */}
+                <Tasks />
             </div>
 
             {/* HEADER MOBILE */}
