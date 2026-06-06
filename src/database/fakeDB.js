@@ -1,13 +1,20 @@
 // src/database.js
 
-
+// 1. Thêm mốc thời gian createdAt (giả lập số mili giây tăng dần để phân biệt trước/sau)
 let todoStorage = [
-  
-  { id: 1, text: "Học Front-End nâng cao với React Vite", isCompleted: false , category: 'work' },
-  { id: 2, text: "Cấu hình thành công Tailwind v4 và Ant Design", isCompleted: true,  category: 'work'},
-  { id: 3, text: "Đẩy toàn bộ source code dự án lên GitHub", isCompleted: true, category: 'personal'},
-  { id: 4, text: "Hoc Back-end di nhat la java ay", isCompleted: false , category: 'personal' },
-  { id: 5, text: "Tap code tay di", isCompleted: true,  category: 'work'},
+    { id: 1, nametask: "Review Q2 marketing brief", kind: "Work", iscompleted: true, level: "Medium", createdAt: 1717658400000 },
+    { id: 2, nametask: "Finalize Milo Creative proposal", kind: "Work", iscompleted: false, level: "High", createdAt: 1717658410000 },
+    { id: 3, nametask: "Send invoice to Westfield Co.", kind: "Work", iscompleted: true, level: "Medium", createdAt: 1717658420000 },
+    { id: 4, nametask: "tiet kiem tien nuoi em", kind: "Personal", iscompleted: false, level: "Low", createdAt: 1717658430000 },
+    { id: 5, nametask: "Mua machca latte", kind: "Personal", iscompleted: false, level: "Low", createdAt: 1717658440000 },
+    { id: 6, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false, level: "Medium", createdAt: 1717658450000 },
+    { id: 7, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false, level: "High", createdAt: 1717658460000 },
+    { id: 8, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false, level: "Low", createdAt: 1717658470000 },
+    { id: 9, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false, level: "Low", createdAt: 1717658480000 },
+    { id: 10, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false, level: "Low", createdAt: 1717658490000 },
+    { id: 11, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false, level: "Low", createdAt: 1717658500000 },
+    { id: 12, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false, level: "Low", createdAt: 1717658510000 },
+    { id: 13, nametask: "vat thu 13", kind: "Personal", iscompleted: false, level: "Low", createdAt: 1717658520000 },
 ];
 
 // Hàm tiện ích tạo độ trễ mạng ngẫu nhiên từ 300ms - 800ms cho giống API thật
@@ -24,15 +31,13 @@ export const todoAPI = {
   },
 
   // THÊM MỚI: POST /api/todos
-  create: async (text) => {
+  // Nhận vào full Object newTask từ client truyền lên (gồm id tự tăng, nametask, kind, level, createdAt)
+  create: async (newTask) => {
     await delay(600);
-    const newTodo = {
-      id: Date.now(), // Tạo ID duy nhất bằng timestamp
-      text: text,
-      isCompleted: false
-    };
-    todoStorage.push(newTodo);
-    return newTodo;
+    
+    // Đẩy Object chuẩn từ Client gửi lên thẳng vào mảng lưu trữ
+    todoStorage.push(newTask);
+    return newTask;
   },
 
   // CẬP NHẬT (Sửa chữ hoặc Bật/Tắt Hoàn thành): PUT /api/todos/:id

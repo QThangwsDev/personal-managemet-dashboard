@@ -1,7 +1,24 @@
 
 
 
-const WelcomeCard = ({percent}) => {
+import { useState } from 'react';
+
+const WelcomeCard = ({percent,remaintask}) => {
+    
+    const remain = remaintask;
+    
+    const [today] = useState(() => new Date());
+
+    const date = today.getDate();
+    const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+    ];
+
+    // getMonth() trả về từ 0 đến 11, khớp hoàn hảo với index của mảng!
+    const monthInWord = monthNames[today.getMonth()];
+    const year = today.getFullYear();   // Lấy năm đầy đủ (Ví dụ: 2026)
+
 
     return (
         <div className="w-full h-50 bg-linear-to-bl flex flex-col from-[#6B5F5C] via-[#44312D] via-[#71534c] to-[#4d443f] rounded-2xl  ">
@@ -9,10 +26,10 @@ const WelcomeCard = ({percent}) => {
             <div className="w-full flex justify-between px-3 py-5 space-x-10">
                 {/* Thong tin ngay thang va loi chao */}
                 <div>
-                    <p className='text-sm text-[#c2a6a0]'> THURSDAY MAY 21, 2026</p>
+                    <p className='text-sm text-[#c2a6a0]'> {monthInWord}  {date}, {year}</p>
                     <h2>Good moring,</h2>
                     <h3>Mir</h3>
-                    <p className='text-sm text-[#c2a6a0]'>You have 5 tasks left today</p>
+                    <p className='text-sm text-[#c2a6a0]'>You have {remain} tasks left today</p>
                 </div>
                 {/* Avatar or hinh anh chup gan nhat */}
                 <div>

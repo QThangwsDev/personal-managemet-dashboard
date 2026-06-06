@@ -1,24 +1,25 @@
-import { PlusIcon, Pencil, Trash, ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
+import { PlusIcon, Pencil, Trash, ArrowBigLeftDash, ArrowBigRightDash,Check,X } from "lucide-react";
 import { useCallback, useState, useRef, useEffect } from 'react'; // 🚀 Thêm useRef và useEffect
 import { Checkbox } from "antd";
+import { todoAPI } from "../database/fakeDB";
+
 
 const Tasks = () => {
     // state qua ly du lieu truyen vao nay kia
-    const [tasks, setTasks] = useState([
-        { id: 1, nametask: "Review Q2 marketing brief", kind: "Work", iscompleted: true , level: "Medium" },
-        { id: 2, nametask: "Finalize Milo Creative proposal", kind: "Work", iscompleted: false, level: "High" },
-        { id: 3, nametask: "Send invoice to Westfield Co.", kind: "Work", iscompleted: true, level: "Medium" },
-        { id: 4, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false , level: "Low" },
-        { id: 5, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false , level: "Low" },
-        { id: 6, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false , level: "Medium" },
-        { id: 7, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false , level: "High" },
-        { id: 8, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false , level: "Low" },
-        { id: 9, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false , level: "Low" },
-        { id: 10, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false , level: "Low" },
-        { id: 11, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false , level: "Low" },
-        { id: 12, nametask: "Mua đồ ăn tối", kind: "Personal", iscompleted: false , level: "Low" },
-        { id: 13, nametask: "vat thu 13", kind: "Personal", iscompleted: false , level: "Low" },
-    ]);
+    const [tasks, setTasks] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () =>{
+            try {
+                const data = await todoAPI.getAll();
+                setTasks(data);
+            } catch (err)
+            {
+                console.log(err)
+            }
+        }
+        fetchData();
+    },[]);
 
     const [filterTab, setFilterTab] = useState('ALL');
     const [isadding, setIsadding] = useState(false);
@@ -26,7 +27,7 @@ const Tasks = () => {
     const [textedit, setTextedit] = useState('');
     const done = tasks.filter((task) => task.iscompleted).length;
 
-    // 🎯 TẠO USEREF ĐỂ ĐIỀU KHIỂN Ô INPUT EDIT
+    
     const inputEditRef = useRef(null);
 
     // Logic Phan trang
@@ -48,15 +49,27 @@ const Tasks = () => {
         setFilterTab(tab);
     };
 
-    // 🔒 SỬA LOGIC: Ngăn chặn hoàn thành khi đang mở ô Edit
-    const togglecomp = useCallback((id) => {
+    const togglecomp = useCallback(async(id) => {
         // Nếu task này đang ở trạng thái sửa đổi, khóa không cho tích hoàn thành!
         if (isedit === id) return; 
 
-        setTasks(prevtask => prevtask.map(task =>
-            task.id === id ? { ...task, iscompleted: !task.iscompleted } : task
-        ));
-    }, [isedit]); // 🚀 Nhớ truyền thêm dependency isedit vào đây
+        // tim task hien tai de lay du lieu cu
+        const targetTask= tasks.find(task => task.id === id);
+        if(!targetTask) return;/// khong tim thay tho tro ve
+
+        const updatetask= !targetTask.iscompleted;
+        try{
+            if(todoAPI) {
+                todoAPI.update(id,{...targetTask,iscompleted: updatetask});
+            }
+            setTasks(prev => prev.map(task => task.id === id ? {...task,iscompleted:updatetask}: task
+            ));
+        } catch (err) {
+            console.log('Loi roi chinh sua vao db',err);
+        }
+
+
+    }, [isedit,tasks]); 
 
     const levelColors = {
         Low: "bg-blue-950/40 text-blue-400 border border-blue-900/50",
@@ -68,25 +81,43 @@ const Tasks = () => {
     const [newKind, setNewKind] = useState('Work');
     const [newLevel, setNewLevel] = useState('Low');
 
-    const handleAddTask = () => {
+    const handleAddTask = async () => {
         if (!newTodoName.trim()) return;
+        const maxId = tasks.length > 0 
+        ? Math.max(...tasks.map(task => Number(task.id))) 
+        : 0;
+        const nextId = maxId + 1;
 
         const newTask = {
-            id: Date.now(),
+            id: nextId,
             nametask: newTodoName.trim(),
             kind: newKind,
             iscompleted: false,
-            level: newLevel
+            level: newLevel,
+            createdAt: Date.now()
         };
+        
 
-        setTasks(prevtask => [newTask, ...prevtask]);
-        setNewTodoName('');
-        setNewKind('Work');
-        setNewLevel('Low');
+        try{
+            if(todoAPI.create){
+                await todoAPI.create(newTask);
+            }
+            setTasks(prevtask => [newTask, ...prevtask]);
+            setNewTodoName('');
+            setNewKind('Work');
+            setNewLevel('Low');
+        } catch (err) {
+            console.error("Loi them task moi",err);
+        }
     };
 
-    const handleDeleteTask = useCallback((id) => {
-        setTasks(prevTasks => {
+
+    // Ham  xoa task
+    const handleDeleteTask = useCallback(async(id) => {
+        try {
+            if(todoAPI.delete){
+                todoAPI.delete(id);
+            setTasks(prevTasks => {
             const updatetask = prevTasks.filter(t => t.id !== id);
             const remainingTask = updatetask.filter(t => {
                 return filterTab === 'ALL' || t.kind === filterTab;
@@ -97,9 +128,15 @@ const Tasks = () => {
             }
             return updatetask;
         });
+            }
+        } catch (error) {
+            console.error("Loi them task moi",error);
+        }
+        
     }, [filterTab, currentPage]);
 
-    const handledit = (item, e) => {
+    //ham xu ly edit
+    const handledit =  (item, e) => {
         e.stopPropagation();
         if (isedit === item.id) {
             setIsedit(null);
@@ -109,26 +146,36 @@ const Tasks = () => {
         }
     };
 
-    // 🚀 TUYỆT CHIÊU: Đợi ô input hiển thị xong là tự động nhảy vào cuối chữ
+    //Đợi ô input hiển thị xong là tự động nhảy vào cuối chữ
     useEffect(() => {
         if (isedit && inputEditRef.current) {
             inputEditRef.current.focus();
-            // Mẹo đỉnh cao: Đặt lại giá trị value bằng chính nó giúp con trỏ chuột nhảy xuống cuối dòng thay vì đứng ở đầu dòng
+            //Đặt lại giá trị value bằng chính nó giúp con trỏ chuột nhảy xuống cuối dòng thay vì đứng ở đầu dòng
             const length = inputEditRef.current.value.length;
             inputEditRef.current.setSelectionRange(length, length);
         }
     }, [isedit]); // Chạy mảng này mỗi khi trạng thái mở ô edit thay đổi
 
-    const handleSave = (id) => {
+    // ham luu thay doi edit
+    const handleSave = async (id) => {
         if (!textedit.trim()) return;
-        setTasks(prev => prev.map(task =>
-            task.id === id ? { ...task, nametask: textedit.trim() } : task
-        ));
-        setIsedit(null);
+        const targetTask = tasks.find(task => task.id === id);
+        if(!targetTask) return;
+
+        try {
+            if(todoAPI.update){
+                todoAPI.update(id,{...targetTask,nametask: textedit.trim()});
+            }
+            setTasks(prev => prev.map(task => task.id === id? {...task, nametask:textedit}: task));
+            setIsedit(null);
+            
+        } catch (error) {
+            console.error("Loi them task moi",error);
+        }   
     };
 
     return (
-        <div className='flex flex-col p-3'>
+        <div className='flex flex-col p-3 text-white'>
             <span className='flex w-full h-12 justify-between overflow-hidden'>
                 <div className='text-[#ffffff]'>
                    <h2 className='text-xl font-serif'>To-Do List</h2> 
@@ -191,24 +238,30 @@ const Tasks = () => {
                         <div className='flex w-full'> 
                             <Checkbox 
                                 checked={item.iscompleted}
-                                disabled={isedit === item.id} // Vô hiệu hóa checkbox luôn khi đang sửa
+                                disabled={isedit === item.id}
                                 className='custom-round-checkbox'
                             />
                             <div className='ml-2 w-full'>
-                                <h2 className={`text-lg ${isedit === item.id ? 'hidden' : ''} w-full`}>{item.nametask}</h2>
-                                <input 
-                                    ref={isedit === item.id ? inputEditRef : null} // 🎯 GẮN REF VÀO ĐÂY
-                                    type="text" 
-                                    className={`${isedit === item.id ? '' : "hidden"} px-2 py-0.5 rounded-md text-black focus:outline-none bg-white w-[90%]`} 
-                                    value={textedit} 
-                                    onChange={(e) => setTextedit(e.target.value)}
-                                    onClick={(e) => e.stopPropagation()} // Chống lan truyền sự kiện ra ngoài
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') handleSave(item.id);
-                                        if (e.key === 'Escape') setIsedit(null);
-                                    }} 
-                                />
-
+                                <div className="w-full flex space-x-1">
+                                    <h2 className={`text-lg ${isedit === item.id ? 'hidden' : ''} w-full`}>{item.nametask}</h2>
+                                    <input 
+                                        ref={isedit === item.id ? inputEditRef : null} 
+                                        type="text" 
+                                        className={`${isedit === item.id ? '' : "hidden"} px-2 py-0.5 rounded-md text-black focus:outline-none bg-white w-[50%]`} 
+                                        value={textedit} 
+                                        onChange={(e) => setTextedit(e.target.value)}
+                                        onClick={(e) => e.stopPropagation()} 
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') handleSave(item.id);
+                                            if (e.key === 'Escape') setIsedit(null);
+                                        }} 
+                                    />
+                                    <div>
+                                        <button  className={`${isedit === item.id ? '' : 'hidden'} hover:bg-amber-900/60 rounded-full p-2 `} onClick={()=> handleSave(item.id)}><Check className='w-4 h-4'></Check></button>
+                                        <button className={`${isedit === item.id ? '' : 'hidden'} hover:bg-amber-900/60 rounded-full p-2 `} onClick={()=> setIsedit(null)}><X className='w-5 h-5'/></button>
+                                    </div>
+                                </div>
+                                
                                 <span className="flex space-x-2 mt-1">
                                     <p className={` ${item.kind === 'Work' ? 'bg-blue-500/80 text-blue-100 px-2 py-0.5 rounded-2xl border border-blue-950' : 'bg-pink-500/50 px-2 py-0.5 rounded-2xl border border-pink-700'} text-xs font-medium`}>{item.kind}</p>
                                     <p className={`text-xs px-2 py-0.5 rounded-md font-medium ${levelColors[item.level]}`}>{item.level}</p>
@@ -227,7 +280,7 @@ const Tasks = () => {
                     </div>
                 ))}
                 
-                {/* Thanh phân trang bên dưới giữ nguyên */}
+                {/* Thanh phân trang bên dưới */}
                 <div className="flex justify-around space-x-2 items-center">
                     <button onClick={() => setCurrentPage(prev => prev - 1)} disabled={currentPage === 1}><ArrowBigLeftDash /></button>
                     {Array.from({ length: totalpage }, (_, index) => {

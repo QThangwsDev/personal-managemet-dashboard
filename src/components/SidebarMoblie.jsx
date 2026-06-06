@@ -1,4 +1,7 @@
 import {  MenuOutlined} from '@ant-design/icons';
+import { NavLink } from 'react-router-dom';
+
+
 const SidebarMoblie = ({navItems}) => {
 
    
@@ -9,9 +12,13 @@ const SidebarMoblie = ({navItems}) => {
             <div className='w-full h-full bg-white text-black flex items-center justify-around rounded-sm'>
                 {/* doi sang navlink khi chinh sua */}
                {navItems.map(item => (
-                <div key={item.id} className='flex flex-col items-center cursor-pointer justify-center space-y-1'>
+                <NavLink to={item.to} key={item.id}
+                        end={item.to === '/'}
+                        className={({isActive}) =>
+                        `flex flex-col items-center cursor-pointer justify-center space-y-1 ${isActive ? 'scale-1.2 font-bold text-[#ff7300]': ''}`
+                         }>
                     {item.icon} {item.label}
-                </div>
+                </NavLink>
                ))}
             </div>
 

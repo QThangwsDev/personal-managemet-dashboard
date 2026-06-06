@@ -27,15 +27,15 @@ const Overview= () => {
 
     //cac bien lien quan
     const total =tasks.length;
-    const completed = tasks.filter(task => task.isCompleted).length;
-    const remain =total-completed;
+    const completed = tasks.filter(task => task.iscompleted).length;
+    const remain =total - completed;
     const overoll = completed>0 ? Math.round(completed/total * 100) : 0 ;
-    const worktasks = tasks.filter(task => task.category ==='work');
+    const worktasks = tasks.filter(task => task.kind ==='Work');
     const worktasksleght= worktasks.length;
-    const workdone= worktasks.filter(work => work.isCompleted).length ;
-    const personaltasks = tasks.filter(task => task.category ==='personal');
+    const workdone= worktasks.filter(work => work.iscompleted).length ;
+    const personaltasks = tasks.filter(task => task.kind ==='Personal');
     const personaltasksleght = personaltasks.length;
-    const personaldone= personaltasks.filter(personal => personal.isCompleted).length;
+    const personaldone= personaltasks.filter(personal => personal.iscompleted).length;
 
     // logic hinh tron
     const radius =25;
@@ -93,7 +93,8 @@ const Overview= () => {
             {/* Layout tren mobile */}
             <div className='w-[90%]  mx-auto my-6 flex flex-col  space-y-3 md:hidden '>
                 <WelcomeCard
-                    percent={percentDone} />
+                    percent={percentDone}
+                    remaintask={remain} />
                 {/* cac thong tin lien quan */}
                 <div className=' w-full grid grid-cols-2 gap-3 '>
                     <div className='h-25 flex-1 rounded-2xl  bg-[#584944] flex flex-col space-y-2 p-5'>
@@ -181,7 +182,8 @@ const Overview= () => {
             {/* Layout tren desktop */}
             <div className='hidden md:flex w-full h-full flex-col space-y-4 p-5'>
                 <WelcomeCard
-                    percent={percentDone}/>
+                    percent={percentDone}
+                    remaintask={remain}/>
                 {/* Cac bang tong so Task */}
                 <div className=' w-full md:grid grid-cols-4 gap-2 '>
                     <div className='h-25 flex-1 rounded-2xl  bg-[#584944] flex flex-col justify-center items-center space-y-2 p-2'>
