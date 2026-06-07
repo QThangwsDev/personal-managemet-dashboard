@@ -1,7 +1,7 @@
 import Avatar from "./Avartar";
 import Logo from "./Logo";
 import { NavLink } from "react-router-dom";
-import { Dot, ChevronsLeftRight,Settings } from "lucide-react";
+import { Dot, PanelLeftOpen,PanelRightOpen,Settings } from "lucide-react";
 import { useState } from "react";
 
 const SidebarDesktop = ({ navItems, collapse, onClick }) => {
@@ -32,7 +32,7 @@ const SidebarDesktop = ({ navItems, collapse, onClick }) => {
                         to={item.to} 
                         end={item.to === '/'} 
                         className={({ isActive }) => 
-                            `group cursor-pointer w-full flex items-center  mt-4 hover:bg-[#ad6b54] hover:text-white rounded-lg px-3 py-2.5 transition-colors duration-200 ${
+                            `group cursor-pointer w-full flex items-center  mt-4 hover:bg-[#ad6b54] hover:text-white rounded-3xl px-2 py-2.5 transition-colors duration-200 ${
                                 isActive ? 'bg-[#9b4829] text-white' : 'text-gray-400'
                             }`
                         }
@@ -41,7 +41,7 @@ const SidebarDesktop = ({ navItems, collapse, onClick }) => {
                             <>
                                 <div className='flex items-center space-x-3 w-full min-w-0'>
                                     {/* Icon cố định kích thước để tránh bóp méo layout */}
-                                    <div className='w-6 h-6 flex-shrink-0 flex items-center justify-center'>
+                                    <div className='w-6 h-6 shrink-0 flex items-center justify-center'>
                                         {item.icon}
                                     </div>
                                     
@@ -66,7 +66,7 @@ const SidebarDesktop = ({ navItems, collapse, onClick }) => {
                                 
                                 {/* Dấu chấm active */}
                                 {!collapse && isActive && (
-                                    <Dot className="text-[#ff5d22] w-6 h-6 flex-shrink-0" />
+                                    <Dot className="text-[#ff5d22] w-6 h-6 shrink-0" />
                                 )}
                             </>
                         )}
@@ -76,7 +76,7 @@ const SidebarDesktop = ({ navItems, collapse, onClick }) => {
 
            
             <button className='mt-auto mx-4 cursor-pointer flex flex-row items-center justify-start hover:bg-[#ad6b54] hover:text-white rounded-lg px-3 py-2.5 transition-colors duration-200 text-gray-400 space-x-3'>
-                <div className='flex-shrink-0 flex items-center justify-center w-6 h-6'><Settings/></div>
+                <div className='shrink-0 flex items-center justify-center w-6 h-6'><Settings/></div>
                 {!collapse && <p>Setting</p>}
             </button>
             
@@ -86,8 +86,8 @@ const SidebarDesktop = ({ navItems, collapse, onClick }) => {
                     className="w-10 h-8 cursor-pointer flex justify-center items-center hover:text-white text-gray-400 transition-colors duration-200" 
                     onClick={onClick}
                 >
-                    {/* Icon xoay báo hiệu trạng thái đóng mở */}
-                    <ChevronsLeftRight className={`w-5 h-5`} />
+                    {collapse?<PanelLeftOpen/>:<PanelRightOpen/> }
+                    
                 </button>
             </div>
             

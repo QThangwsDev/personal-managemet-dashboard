@@ -1,4 +1,4 @@
-const Avatar = ({ collapse }) => {
+const Avatar = ({ collapse}) => {
   return (
     
     <div className={`flex items-center border-b border-gray-700 py-3 ${collapse ? 'justify-center' : 'space-x-3 px-5'}`}>

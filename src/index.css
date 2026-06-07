@@ -50,7 +50,32 @@
     filter: invert(1) brightness(2);
   }
 }
-
+/* Giải phóng không gian ô lịch Ant Design cho Tailwind */
+.ant-picker-calendar-date { 
+  position: relative !important; 
+  overflow: hidden !important;
+  margin: 2px !important;
+  padding: 0 !important;
+  height: 100% !important;
+  min-height: 40px !important; 
+  @media (min-width: 768px) {
+    min-height: 60px !important;
+  }
+  border-radius: 8px !important;
+  border: none !important;
+}
+.ant-picker-calendar-date-value { 
+    display: none !important; 
+}
+.ant-picker-calendar-date-content { 
+    position: absolute !important;
+    inset: 0 !important;
+    margin: 0 !important;
+}
+.ant-picker-cell-selected .ant-picker-calendar-date {
+    outline: 2px solid #c8849a !important;
+    outline-offset: -2px;
+}
 body {
   margin: 0;
   padding: 0;
