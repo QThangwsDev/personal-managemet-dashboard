@@ -17,6 +17,7 @@ let todoStorage = [
     { id: 13, nametask: "vat thu 13", kind: "Personal", iscompleted: false, level: "Low", createdAt: 1717658520000 },
 ];
 
+
 // Hàm tiện ích tạo độ trễ mạng ngẫu nhiên từ 300ms - 800ms cho giống API thật
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 

@@ -44,7 +44,7 @@ function UserLayout() {
      
             {/* MAIN CONTENT */}
             <div 
-                className='bg-[#251B19] flex-1 h-full w-full flex flex-col pt-18 md:pt-0 overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'
+                className='bg-[#251B19] flex-1  min-h-screen w-full flex flex-col pt-18  md:pt-0 overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'
                 onScroll={handleScroll}   
             >
                 <Outlet />

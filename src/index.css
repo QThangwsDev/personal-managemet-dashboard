@@ -54,16 +54,18 @@
 .ant-picker-calendar-date { 
   position: relative !important; 
   overflow: hidden !important;
-  margin: 2px !important;
+  margin: 5px !important;
   padding: 0 !important;
   height: 100% !important;
-  min-height: 40px !important; 
+  min-height: 50px !important; 
   @media (min-width: 768px) {
-    min-height: 60px !important;
+    min-height: 50px !important;
   }
-  border-radius: 8px !important;
+  border-radius: 10px !important;
   border: none !important;
 }
+
+/* costoms css cho antd */
 .ant-picker-calendar-date-value { 
     display: none !important; 
 }
@@ -71,10 +73,37 @@
     position: absolute !important;
     inset: 0 !important;
     margin: 0 !important;
+    padding:0 !important;
 }
 .ant-picker-cell-selected .ant-picker-calendar-date {
-    outline: 2px solid #c8849a !important;
+    outline:  solid #c8849a !important;
+    transform: scale(1.05);
     outline-offset: -2px;
+}
+.custom-calendar-square .ant-picker-calendar-date {
+    aspect-ratio: 1 / 1 !important; /* Bắt buộc tỷ lệ rộng = cao */
+    height: auto !important;         /* Tháo bỏ chiều cao mặc định của Antd */
+    display: flex;
+    flex-direction:column;
+    justify-content: space-between;
+    width: 90% !important;          /* Chiếm hết không gian cột cho phép */
+    max-width: 80px !important;
+    margin:10 auto;      /* TRÊN MÁY TÍNH: Giới hạn tối đa chỉ to đến kích thước này (bạn tự chỉnh số này) */
+
+    
+}
+
+@media (max-width: 767px) {
+    .custom-calendar-square .ant-picker-calendar-date {
+        
+        max-width: none !important;
+        margin: 2 2 !important;  /* Trên điện thoại chỉ to tối đa 45px là vừa đẹp */
+    }
+    
+}
+/* Thu nhỏ chiều6 cao tổng thể của phần ruột bên trong ô nếu cần */
+.custom-calendar-square .ant-picker-calendar-date-content {
+    height: 100% !important;
 }
 body {
   margin: 0;
