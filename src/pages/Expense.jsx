@@ -163,7 +163,7 @@ const Expenses=() =>{
   };
 
   return (
-    <div className="w-full mx-auto pb-30 bg-slate-50 pb-12 shadow-lg font-sans">
+    <div className="w-full mx-auto pb-30 bg-slate-50  shadow-lg font-sans">
       
       {/* Header ví tiền */}
       <div className="bg-gradient-to-r from-teal-700 to-emerald-600 text-white p-6 rounded-b-3xl shadow-md">
@@ -245,7 +245,7 @@ const Expenses=() =>{
                     <img 
                       src={item.image} 
                       alt="Locket expense" 
-                      className="w-full h-full object-cover filter sepia-[15%] contrast-[105%]" 
+                      className="w-full h-full object-cover filter sepia-15 contrast-[105%]" 
                     />
                   </div>
                   {item.note && (
