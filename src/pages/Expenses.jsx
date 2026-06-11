@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import dayjs from 'dayjs';
 
+
 const { Title, Text } = Typography;
 const { Option } = Select;
 
@@ -156,11 +157,14 @@ const Expenses = () => {
     return (
       <Card title={
         <Space>
-          <Calendar size={18} className='text bg-amber-600/60' />
-          <span>Goc Danh Gia & Canh Bao {isEndMonth ? 'Cuoi Thang' : 'Trong Thang'}</span>
+          <Calendar size={18} className='text-white ' />
+          <span className='text-white'>Goc Danh Gia & Canh Bao {isEndMonth ? 'Cuoi Thang' : 'Trong Thang'}</span>
         </Space>
-      } className="mb-6 shadow-sm border-amber-600">
-        <Alert 
+      } className="shadow-sm !bg-linear-to-br from-[#e8a978] via-[#694c38] to-[#99573f] "
+        
+      >
+        <Alert
+          className='h-20 '
           message={messageTitle}
           type={alerttype}
           description={description}
@@ -168,7 +172,7 @@ const Expenses = () => {
           icon={alerttype === 'error' ? <AlertTriangle /> : <CheckCircle />}
         />
         <div className='mt-4 text-center'>
-          <Text type={'secondary'}> Tháng này bạn đánh giá mức độ hài lòng về chi tiêu cá nhân thế nào? </Text>
+          <Text type={'secondary'} className='!text-white'> Bạn đánh giá mức độ hài lòng về chi tiêu cá nhân thế nào? </Text>
           <div className="mt-2">
             <Rate defaultValue={remainingBudget > 0 ? 4 : 2} character={<Smile size={20}/>} />
           </div>
@@ -178,16 +182,19 @@ const Expenses = () => {
   };
 
   return (
-    <ConfigProvider theme={{ token: { colorText: '#908F8E' } }}>
-      <div className='w-full mb-30 font-sans mx-auto px-4 max-w-2xl pt-6'>
+    <ConfigProvider theme={{ 
+      token: { colorText: '#908F8E' },
+     
+      }}>
+      <div className='w-full mb-30 font-sans mx-auto px-4 max-w-2xl md:max-w-none pt-6'>
         {/* header vi tien */}
-        <div className='bg-amber-700/90 p-6 rounded-3xl text-white shadow-md'>
+        <div className='bg-linear-to-br from-[#7a6657] via-[#694c38] to-[#7d3e1b] p-6 rounded-3xl text-white shadow-md'>
           <div className='flex justify-between items-center mb-4'>
             <Space>
               <Wallet size={24}/>
               <Title level={4} style={{ color: 'white', margin: 0 }} >Quan ly chi tieu</Title>
             </Space>
-            <Button type='text' className='text-white hover:text-amber-200' onClick={() => setIsSalaryModalOpen(true)}>Sua luong</Button>
+            <Button type='text' onClick={() => setIsSalaryModalOpen(true)}>Sua luong</Button>
           </div>
 
           <div className='grid grid-cols-2 gap-4 mt-2'>
@@ -210,38 +217,36 @@ const Expenses = () => {
           </div>
         </div>
 
-        <div className='py-4'>
-          {/* khu vuc danh gia va Canh bao */}
-          {renderEndMonthReport()}
-
-          {/* Khoi chuc nang them Nhanh/ chup hinh */}
+         {/* Khoi chuc nang them Nhanh/ chup hinh */}
           <div className='flex gap-3 mb-6 mt-3'>
             <Button
               type='primary'
               icon={<Plus size={18} />}
-              className='flex-1 h-12 bg-emerald-600 hover:bg-emerald-500 rounded-2xl font-medium border-none'
+              className='flex-1 h-12 !bg-amber-700/60 hover:!bg-[#897669] rounded-2xl font-medium border-none'
               onClick={() => { setModalType('add'); setIsExpenseModalOpen(true); }}
             >
               Them chi tieu
             </Button>
             <Button
               icon={<Camera size={18}/>}
-              className='flex-1 h-12 bg-stone-100 hover:bg-stone-200 rounded-2xl font-medium border-stone-300 text-stone-700'
+              className='flex-1 h-12 !bg-[#ffffff] hover:!bg-amber-500/80 rounded-2xl font-medium !border-stone-300 !text-stone-700'
               onClick={startCamera}
             >
               Chup hinh
             </Button>
           </div>
-
+        <div className='py-4'>
+          {/* khu vuc danh gia va Canh bao */}
+          {renderEndMonthReport()}
           {/* Danh sach khoan chi tieu */}
-          <Title level={5} className='mb-3 text-slate-600'>Lịch sử chi tiêu</Title>
+          <Title level={5} className='mb-3 font-serif !text-white'>Lịch sử chi tiêu</Title>
           <List
             itemLayout='vertical'
             dataSource={expenses}
             locale={{ emptyText: 'Chưa có bất kỳ khoản chi tiêu nào' }}
             renderItem={(item) => (
-              <Card className='mb-4 rounded-2xl shadow-sm border-slate-200 overflow-hidden bg-white hover:shadow-md transition-shadow' bodyStyle={{ padding: '16px' }}>
-                <div className='flex justify-between items-start mb-2'>
+              <Card className='!mb-4 rounded-2xl shadow-sm border-slate-200 overflow-hidden bg-white hover:shadow-md transition-shadow' bodyStyle={{ padding: '16px' }}>
+                <div className='flex justify-between items-start mb-2 '>
                   <div>
                     <span className='inline-block px-2 py-0.5 bg-slate-100 rounded text-xs font-semibold mr-2 text-slate-600'>
                       {item.category}
@@ -251,37 +256,42 @@ const Expenses = () => {
                   <Text className='text-base font-bold text-rose-600'>-{item.amount.toLocaleString('vi-VN')} D</Text>
                 </div>
 
-                {/* Neu co anh thi hien thi khung */}
-                {item.image && (
-                  <div className='my-3 bg-stone-50 p-2 rounded-lg border border-stone-200 shadow-inner'>
-                    <div className='relative aspect-square max-w-xs mx-auto overflow-hidden rounded bg-black flex items-center justify-center'>
-                      <img
-                        src={item.image}
-                        alt='locket expense'
-                        className='w-full h-full object-cover'
-                      />
-                    </div>
-                    {item.note && (
-                      <div className='mt-2 text-center font-serif text-sm italic tracking-wide text-stone-600'>
-                        "{item.note}"
+                {/* noi dung bill */}
+                <div className=' bg-amber-600/10 p-2  md:flex md:justify-start md:space-x-2 '>
+                    {/* Neu co anh thi hien thi khung */}
+                    {item.image && (
+                      <div className='my-3 bg-stone-50 p-2 w-45 mx-auto md:mx-0 rounded-lg border border-stone-200 shadow-inner'>
+                        <div className='relative w-30 h-30 aspect-square mx-auto overflow-hidden rounded bg-black flex items-center justify-center'>
+                          <img
+                            src={item.image}
+                            alt='locket expense'
+                            className='w-full h-full object-cover'
+                          />
+                        </div>
+                        {item.note && (
+                          <div className='mt-2 text-center font-serif text-sm italic tracking-wide text-stone-600'>
+                            "{item.note}"
+                          </div>
+                        )}
                       </div>
                     )}
-                  </div>
-                )}
 
-                {!item.image && item.note && (
-                  <p className='text-sm bg-slate-50 p-2 rounded-lg my-2 border-l-4 border-emerald-400 text-slate-700'>
-                    {item.note}
-                  </p>
-                )}
+                    
+                    {!item.image && item.note && (
+                      <p className='text-sm bg-slate-50 p-2 rounded-lg my-2 border-l-4 border-emerald-400 text-slate-700'>
+                        {item.note}
+                      </p>
+                    )}
 
-                <div className='flex justify-between items-center mt-2 pt-2 border-t border-dashed border-slate-200 text-xs'>
-                  <span className='flex items-center gap-1'>
-                    <Smile size={14} className='text-amber-600'/>
-                    Cam nhan: <span className='font-medium text-slate-800'>{item.feeling || 'Binh Thuong'}</span>
-                  </span>
-                  <Rate disabled defaultValue={item.rating} className='text-xs' />
+                    <div className='flex justify-between items-center mt-2 pt-2 border-t border-dashed border-slate-200 text-xs md:flex-col md:justify-center md:mr-2'>
+                      <span className='flex items-center gap-1'>
+                        <Smile size={14} className='text-amber-600'/>
+                        Cam nhan: <span className='font-medium text-slate-800'>{item.feeling || 'Binh Thuong'}</span>
+                      </span>
+                      <Rate disabled defaultValue={item.rating} className='text-xs' />
+                    </div>
                 </div>
+                
               </Card>
             )}
           />
@@ -351,7 +361,7 @@ const Expenses = () => {
                       <ImageIcon size={40} />
                     </div>
                   )}
-                  <Button type='dashed' className='mt-4 border-stone-400 hover:text-emerald-600' onClick={startCamera}>
+                  <Button type='dashed' className='mt-4 border-stone-400 hover:!text-[#ed5700] !bg-[#e4e1e0]' onClick={startCamera}>
                     Chụp lại ảnh khác
                   </Button>
                 </div>
@@ -361,14 +371,16 @@ const Expenses = () => {
 
           {/* Form dien thong tin chung */}
           <Form form={form} layout="vertical" onFinish={onFinishExpense} className="mt-4" initialValues={{ category: 'Ăn uống', rating: 3 }}>
-            <Form.Item name="amount" label="Số tiền chi tiêu" rules={[{ required: true, message: 'Vui lòng nhập số tiền!' }]}>
-              <InputNumber
-                className="w-full"
-                size="large"
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
-                addonAfter="đ"
-              />
+            <Form.Item name="amount" label="Số tiền chi tiêu" rules={[{ required: true , message: 'Vui lòng nhập số tiền!' }, {type:'number',min:1000, message:'So tien khong hop le'}]}>
+              <div className='w-full flex '>
+                 <InputNumber
+                  className="!w-full flex-1 "
+                  size="large"
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+                  addonAfter="đ"
+                />
+              </div>
             </Form.Item>
   
             <Form.Item name="category" label="Danh mục chi">
@@ -402,8 +414,8 @@ const Expenses = () => {
   
             <Form.Item className="mb-0 text-right">
               <Space>
-                <Button onClick={handleCloseExpenseModal}>Hủy bỏ</Button>
-                <Button type="primary" htmlType="submit" className="bg-emerald-600 hover:bg-emerald-500 border-none">
+                <Button onClick={handleCloseExpenseModal} className='!bg-red-500/80 hover:!bg-rose-300/80 !border-none !text-white'>Hủy bỏ</Button>
+                <Button type="primary" htmlType="submit" className="!bg-emerald-600 hover:!bg-emerald-500/50 !border-none">
                   Ghi sổ ngay
                 </Button>
               </Space>
